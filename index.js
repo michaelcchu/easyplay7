@@ -19,26 +19,27 @@ function down(e) {
         && (press != activePress) && (osmd.cursor !== null)) {
             if (playedFirstNote) {osmd.cursor.next();} 
             else {playedFirstNote = true;}
-            const cursorNotes = osmd.cursor.NotesUnderCursor();
-            if (cursorNotes[0]) {
-                const pitch = cursorNotes[0].pitch;
-                if (pitch) {
-                    const note = {
-                        pitch: pitch.fundamentalNote 
-                            + pitch.AccidentalHalfTones, 
-                        octave: pitch.octave + 3,
-                    }
-                    const freq = toFreq(note);
-                    if (activePress === null) {
-                        oscillator.frequency.value = freq;
-                        gainNode.gain.setTargetAtTime(normalGain, 
-                            audioContext.currentTime, 0.015);
-                    } else {
-                        oscillator.frequency.setTargetAtTime(freq, 
-                            audioContext.currentTime, 0.003)   
-                    }
-                    activePress = press;
+            while (osmd.cursor.NotesUnderCursor()[0] && 
+                osmd.cursor.NotesUnderCursor()[0].pitch === undefined) {
+                osmd.cursor.next();
+            }
+            if (osmd.cursor.NotesUnderCursor()[0]) {                
+                const pitch = osmd.cursor.NotesUnderCursor()[0].pitch;
+                const note = {
+                    pitch: pitch.fundamentalNote 
+                        + pitch.AccidentalHalfTones, 
+                    octave: pitch.octave + 3,
                 }
+                const freq = toFreq(note);
+                if (activePress === null) {
+                    oscillator.frequency.value = freq;
+                    gainNode.gain.setTargetAtTime(normalGain, 
+                        audioContext.currentTime, 0.015);
+                } else {
+                    oscillator.frequency.setTargetAtTime(freq, 
+                        audioContext.currentTime, 0.003)   
+                }
+                activePress = press;
             }
     } else if (strPress.includes("Arrow") && (activePress === null)) {
         if (strPress.includes("Left")) {
