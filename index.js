@@ -7,7 +7,7 @@ const osmd = new opensheetmusicdisplay.OpenSheetMusicDisplay(container);
 const value = {"c":0,"d":2,"e":4,"f":5,"g":7,"a":9,"b":11,"#":1,"&":-1};
 
 let activePress; let loadPromise; let on = false; let parts;
-let press; let track; let tuning; let playedFirstNote;
+let press; let track; let tuning; let playedFirstNote; let tieCount;
 
 oscillator.connect(gainNode).connect(audioContext.destination);
 osmd.FollowCursor = true;
@@ -17,12 +17,22 @@ function down(e) {
     if (on && !badKeys.some(badKey => strPress.includes(badKey))
         && !e.repeat && (document.activeElement.nodeName !== 'INPUT') 
         && (press != activePress) && (osmd.cursor !== null)) {
-            if (playedFirstNote) {osmd.cursor.next();} 
-            else {playedFirstNote = true;}
+            // Skip tied notes
+            if (tieCount > 0) {
+                for (let i=0; i < tieCount; i++) {osmd.cursor.next();}
+                tieCount = 0;
+            }
+
+            // Skip rests
             while (osmd.cursor.NotesUnderCursor()[0] && 
                 osmd.cursor.NotesUnderCursor()[0].pitch === undefined) {
                 osmd.cursor.next();
             }
+
+            // Special behavior for first note
+            if (playedFirstNote) {osmd.cursor.next();} 
+            else {playedFirstNote = true;}
+            
             if (osmd.cursor.NotesUnderCursor()[0]) {                
                 const pitch = osmd.cursor.NotesUnderCursor()[0].pitch;
                 const note = {
@@ -40,6 +50,11 @@ function down(e) {
                         audioContext.currentTime, 0.003)   
                 }
                 activePress = press;
+                if (osmd.cursor.NotesUnderCursor()[0].tie !== undefined) {
+                    const tie = osmd.cursor.NotesUnderCursor()[0].tie;
+                    tieCount = tie.notes.length - 1;
+
+                }
             }
     } else if (strPress.includes("Arrow") && (activePress === null)) {
         if (strPress.includes("Left")) {
@@ -104,6 +119,7 @@ function resetVars() {
     tuning = unbundle(tuningNote.value);
     tuning.frequency = +tuningFrequency.value;
     track = select.selectedIndex;
+    tieCount = 0;
     const proposedGain = +gain.value;
     if (proposedGain <= 1 && proposedGain >= 0) {normalGain = proposedGain;} 
     else {normalGain = 0.15;}
