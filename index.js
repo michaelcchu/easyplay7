@@ -152,6 +152,8 @@ select.addEventListener("change", render);
 const docEventTypes = ["keydown","keyup","touchstart","touchend"];
 for (et of docEventTypes) {document.addEventListener(et, key);}
 
-start.addEventListener("click", () => {
+test.addEventListener("click", () => {
     if (!on) {oscillator.start(); on = true;}
+    oscillator.frequency.value = 440;
+    gainNode.gain.setTargetAtTime(normalGain, audioContext.currentTime, 0.015);
 });
