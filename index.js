@@ -22,18 +22,19 @@ function down(e) {
                 for (let i=0; i < tieCount; i++) {osmd.cursor.next();}
                 tieCount = 0;
             }
-
-            // Skip rests
-            while (osmd.cursor.NotesUnderCursor()[0] && 
-                osmd.cursor.NotesUnderCursor()[0].pitch === undefined) {
-                osmd.cursor.next();
-            }
-
+            
             // Special behavior for first note
             if (playedFirstNote) {osmd.cursor.next();} 
             else {playedFirstNote = true;}
+
+            // Skip rests
+            while ((osmd.cursor.NotesUnderCursor().length > 0) 
+                && (osmd.cursor.NotesUnderCursor()[0].pitch === undefined)) {
+                osmd.cursor.next();
+            }
             
-            if (osmd.cursor.NotesUnderCursor()[0]) {                
+            if (osmd.cursor.NotesUnderCursor()[0] 
+                && osmd.cursor.NotesUnderCursor()[0].pitch !== undefined) {                
                 const pitch = osmd.cursor.NotesUnderCursor()[0].pitch;
                 const note = {
                     pitch: pitch.fundamentalNote 
