@@ -13,6 +13,7 @@ oscillator.connect(gainNode).connect(audioContext.destination);
 osmd.FollowCursor = true;
 
 setGain();
+setTuning();
 
 function down(e) {
     const strPress = "" + press;
@@ -116,8 +117,6 @@ function render() {
 
 function resetVars() {
     activePress = null; playedFirstNote = false;
-    tuning = unbundle(tuningNote.value);
-    tuning.frequency = +tuningFrequency.value;
     tieCount = 0;
     gainNode.gain.value = 0;
 }
@@ -173,7 +172,13 @@ function setTrack() {
     render();
 }
 
+function setTuning() {
+    tuning = unbundle(tuningNote.value);
+    tuning.frequency = +tuningFrequency.value;
+}
+
 input.addEventListener("change", parse);
 dbfs.addEventListener("change", setGain);
 view.addEventListener("change", setView);
 select.addEventListener("change", setTrack);
+tuningFrequency.addEventListener("change", setTuning);
