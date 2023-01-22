@@ -111,7 +111,6 @@ function render() {
     }
     loadPromise.then(() => {
         osmd.render();
-        //osmd.cursor.reset();
         osmd.cursor.show();
     });
 }
@@ -150,9 +149,10 @@ function up() {
 input.addEventListener("change", parse);
 select.addEventListener("change", render);
 
-const docEventTypes = ["keydown","keyup","touchstart","touchend"];
-for (et of docEventTypes) {document.addEventListener(et, key);}
+const eventTypes = ["keydown","keyup","touchstart","touchend"];
+for (et of eventTypes) {container.addEventListener(et, key);}
 
-test.addEventListener("click", () => {
+start.addEventListener("click", () => {
     if (!on) {oscillator.start(); on = true;}
+    if (osmd.cursor) {osmd.cursor.reset();}
 });
