@@ -70,7 +70,7 @@ function down(e) {
         }
         else if (strPress.includes("Right")) {osmd.cursor.next();}
     } else if (strPress.includes("Home") && (activePress === null)) {
-        osmd.cursor.reset();
+        begin();
     }
 }
 
@@ -93,7 +93,7 @@ function parse() {
              loadPromise = osmd.load(mxlDoc);             
              parts = mxlDoc.querySelectorAll("part");
 
-             // the old track options with new track options 
+             // replace the old track options with new track options 
              while (select.options.length) {select.options.remove(0);}
              for (let i = 0; i < parts.length; i++) {
                  const option = document.createElement("option");
@@ -101,8 +101,6 @@ function parse() {
              }
              resetVars();
              setTrack();
-
-             //if (!on) {oscillator.start(); on = true;}
         });
         reader.readAsText(file);
     }
@@ -145,11 +143,13 @@ for (et of containerEventTypes) {container.addEventListener(et, key);}
 const docEventTypes = ["keydown","keyup"];
 for (et of docEventTypes) {document.addEventListener(et, key);}
 
-start.addEventListener("click", () => {
+function begin() {
     if (!on) {oscillator.start(); on = true;}
     if (osmd.cursor) {osmd.cursor.reset();}
     resetVars();
-});
+}
+
+start.addEventListener("click", begin);
 
 function setGain() {
     normalGain = 10**(dbfs.value/20);
