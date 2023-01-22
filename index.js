@@ -4,7 +4,7 @@ const badKeys = ["Alt","Arrow","Audio","Enter","Home","Launch","Meta","Play",
 const gainNode = new GainNode(audioContext);
 const oscillator = new OscillatorNode(audioContext, {frequency: 0});
 const osmd = new opensheetmusicdisplay.OpenSheetMusicDisplay(container);
-const value = {"c":0,"d":2,"e":4,"f":5,"g":7,"a":9,"b":11,"#":1,"&":-1};
+const value = {"c":0,"d":2,"e":4,"f":5,"g":7,"a":9,"b":11,"#":1,"&":-1,"":0};
 
 let activePress; let loadPromise; let normalGain; let on = false; let parts;
 let press; let track; let tuning; let playedFirstNote; let tieCount;
@@ -52,7 +52,7 @@ function down(e) {
                         audioContext.currentTime, 0.015);
                 } else {
                     oscillator.frequency.setTargetAtTime(freq, 
-                        audioContext.currentTime, 0.003)   
+                        audioContext.currentTime, 0.003);   
                 }
                 activePress = press;
                 if (osmd.cursor.NotesUnderCursor()[0].tie !== undefined) {
@@ -167,7 +167,7 @@ function setTrack() {
 
 function setTuning() {
     tuning = {
-        pitch: value[tuningPitch.value],
+        pitch: value[tuningPitch.value] + value[tuningAccidental.value],
         octave: +tuningOctave.value,
         frequency: +tuningFrequency.value
     }
