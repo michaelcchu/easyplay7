@@ -99,8 +99,8 @@ function parse() {
                  const option = document.createElement("option");
                  option.text = parts[i].id; select.add(option);
              }
+             resetVars();
              setTrack();
-             render();
 
              //if (!on) {oscillator.start(); on = true;}
         });
