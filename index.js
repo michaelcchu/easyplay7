@@ -151,3 +151,7 @@ select.addEventListener("change", render);
 
 const docEventTypes = ["keydown","keyup","touchstart","touchend"];
 for (et of docEventTypes) {document.addEventListener(et, key);}
+
+start.addEventListener("click", () => {
+    if (!on) {oscillator.start(); on = true;}
+});
