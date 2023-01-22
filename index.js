@@ -6,7 +6,7 @@ const oscillator = new OscillatorNode(audioContext, {frequency: 0});
 const osmd = new opensheetmusicdisplay.OpenSheetMusicDisplay(container);
 const value = {"c":0,"d":2,"e":4,"f":5,"g":7,"a":9,"b":11,"#":1,"&":-1};
 
-let activePress; let loadPromise; let on = false; let parts;
+let activePress; let loadPromise; let normalGain; let on = false; let parts;
 let press; let track; let tuning; let playedFirstNote; let tieCount;
 
 oscillator.connect(gainNode).connect(audioContext.destination);
@@ -155,5 +155,6 @@ for (et of docEventTypes) {document.addEventListener(et, key);}
 test.addEventListener("click", () => {
     if (!on) {oscillator.start(); on = true;}
     oscillator.frequency.value = 440;
+    normalGain = 0.15;
     gainNode.gain.setTargetAtTime(normalGain, audioContext.currentTime, 0.015);
 });
