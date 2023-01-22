@@ -11,6 +11,7 @@ let press; let track; let tuning; let playedFirstNote; let tieCount;
 
 oscillator.connect(gainNode).connect(audioContext.destination);
 osmd.FollowCursor = true;
+//osmd.setOptions({renderSingleHorizontalStaffline: true});
 
 function down(e) {
     const strPress = "" + press;
