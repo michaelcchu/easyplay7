@@ -98,7 +98,7 @@ function parse() {
 
              render();
 
-             if (!on) {oscillator.start(); on = true;}
+             //if (!on) {oscillator.start(); on = true;}
         });
         reader.readAsText(file);
     }
@@ -142,8 +142,8 @@ function unbundle(note) {
 
 function up() {
     if (on && (press === activePress)) {
-        gainNode.gain.setTargetAtTime(0, audioContext.currentTime, 0.015);
-        activePress = null;
+        //gainNode.gain.setTargetAtTime(0, audioContext.currentTime, 0.015);
+        //activePress = null;
     }
 }
 
@@ -155,7 +155,7 @@ for (et of docEventTypes) {document.addEventListener(et, key);}
 
 test.addEventListener("click", () => {
     if (!on) {oscillator.start(); on = true;}
-    oscillator.frequency.value = 440;
-    normalGain = 0.15;
-    gainNode.gain.setTargetAtTime(normalGain, audioContext.currentTime, 0.015);
+    //oscillator.frequency.value = 440;
+    //normalGain = 0.15;
+    //gainNode.gain.setTargetAtTime(normalGain, audioContext.currentTime, 0.015);
 });
