@@ -15,6 +15,12 @@ osmd.FollowCursor = true;
 setGain();
 setTuning();
 
+function begin() {
+    if (!on) {oscillator.start(); on = true;}
+    if (osmd.cursor) {osmd.cursor.reset();}
+    resetVars();
+}
+
 function down(e) {
     const strPress = "" + press;
     if (on && !badKeys.some(badKey => strPress.includes(badKey))
@@ -74,8 +80,6 @@ function down(e) {
     }
 }
 
-function format(x) {return x.trim().toLowerCase();}
-
 function key(e) { 
     if (e.type.includes("key")) {press = e.key;} 
     else {press = e.changedTouches[0].identifier;}
@@ -119,43 +123,9 @@ function resetVars() {
     gainNode.gain.value = 0;
 }
 
-function toFreq(note) {
-    return tuning.frequency * 2**((note.pitch - tuning.pitch)/12 
-        + note.octave - tuning.octave)
-}
-
-function up() {
-    if (on && (press === activePress)) {
-        gainNode.gain.setTargetAtTime(0, audioContext.currentTime, 0.015);
-        activePress = null;
-    }
-}
-
-const containerEventTypes = ["touchstart","touchend"];
-for (et of containerEventTypes) {container.addEventListener(et, key);}
-const docEventTypes = ["keydown","keyup"];
-for (et of docEventTypes) {document.addEventListener(et, key);}
-
-function begin() {
-    if (!on) {oscillator.start(); on = true;}
-    if (osmd.cursor) {osmd.cursor.reset();}
-    resetVars();
-}
-
-start.addEventListener("click", begin);
-
 function setGain() {
     normalGain = 10**(dbfs.value/20);
 };
-
-function setView() {
-    if (view.value === "horizontal") {
-        osmd.setOptions({renderSingleHorizontalStaffline: true});
-    } else {
-        osmd.setOptions({renderSingleHorizontalStaffline: false});
-    }
-    render();
-}
 
 function setTrack() {
     track = select.selectedIndex;
@@ -173,6 +143,33 @@ function setTuning() {
     }
 }
 
+function setView() {
+    if (view.value === "horizontal") {
+        osmd.setOptions({renderSingleHorizontalStaffline: true});
+    } else {
+        osmd.setOptions({renderSingleHorizontalStaffline: false});
+    }
+    render();
+}
+
+function toFreq(note) {
+    return tuning.frequency * 2**((note.pitch - tuning.pitch)/12 
+        + note.octave - tuning.octave)
+}
+
+function up() {
+    if (on && (press === activePress)) {
+        gainNode.gain.setTargetAtTime(0, audioContext.currentTime, 0.015);
+        activePress = null;
+    }
+}
+
+const containerEventTypes = ["touchstart","touchend"];
+for (et of containerEventTypes) {container.addEventListener(et, key);}
+const docEventTypes = ["keydown","keyup"];
+for (et of docEventTypes) {document.addEventListener(et, key);}
+
+start.addEventListener("click", begin);
 input.addEventListener("change", parse);
 dbfs.addEventListener("change", setGain);
 view.addEventListener("change", setView);
