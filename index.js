@@ -83,19 +83,20 @@ function parse() {
     for (const file of input.files) {
         const reader = new FileReader();
         reader.addEventListener("load", (e) => {
-             const text = e.target.result
+             const text = e.target.result;
              const parser = new DOMParser();
              const mxlDoc = parser.parseFromString(text,'text/xml');
              console.log(mxlDoc);
              loadPromise = osmd.load(mxlDoc);             
              parts = mxlDoc.querySelectorAll("part");
 
+             // the old track options with new track options 
              while (select.options.length) {select.options.remove(0);}
              for (let i = 0; i < parts.length; i++) {
                  const option = document.createElement("option");
                  option.text = parts[i].id; select.add(option);
              }
-
+             setTrack();
              render();
 
              //if (!on) {oscillator.start(); on = true;}
@@ -141,8 +142,6 @@ function up() {
     }
 }
 
-input.addEventListener("change", parse);
-
 const containerEventTypes = ["touchstart","touchend"];
 for (et of containerEventTypes) {container.addEventListener(et, key);}
 const docEventTypes = ["keydown","keyup"];
@@ -175,6 +174,7 @@ function setTrack() {
     render();
 }
 
+input.addEventListener("change", parse);
 dbfs.addEventListener("change", computeGain);
 view.addEventListener("change", setView);
 select.addEventListener("change", setTrack);
