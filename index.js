@@ -149,8 +149,10 @@ function up() {
 input.addEventListener("change", parse);
 select.addEventListener("change", render);
 
-const eventTypes = ["keydown","keyup","touchstart","touchend"];
-for (et of eventTypes) {container.addEventListener(et, key);}
+const containerEventTypes = ["touchstart","touchend"];
+for (et of containerEventTypes) {container.addEventListener(et, key);}
+const docEventTypes = ["keydown","keyup"];
+for (et of docEventTypes) {document.addEventListener(et, key);}
 
 start.addEventListener("click", () => {
     if (!on) {oscillator.start(); on = true;}
