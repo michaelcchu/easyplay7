@@ -42,8 +42,8 @@ function down(e) {
                     octave: pitch.octave + 3,
                 }
                 const freq = toFreq(note);
+                console.log(press, freq);
                 if (activePress === null) {
-                    console.log(press, freq);
                     oscillator.frequency.value = freq;
                     gainNode.gain.setTargetAtTime(normalGain, 
                         audioContext.currentTime, 0.015);
