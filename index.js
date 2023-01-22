@@ -121,9 +121,7 @@ function resetVars() {
     tuning.frequency = +tuningFrequency.value;
     track = select.selectedIndex;
     tieCount = 0;
-    const proposedGain = +gain.value;
-    if (proposedGain <= 1 && proposedGain >= 0) {normalGain = proposedGain;} 
-    else {normalGain = 0.15;}
+    computeGain();
     gainNode.gain.value = 0;
 }
 
@@ -157,4 +155,11 @@ for (et of docEventTypes) {document.addEventListener(et, key);}
 start.addEventListener("click", () => {
     if (!on) {oscillator.start(); on = true;}
     if (osmd.cursor) {osmd.cursor.reset();}
+    resetVars();
 });
+
+function computeGain() {
+    normalGain = 10**(dbfs.value/20);
+};
+
+dbfs.addEventListener("change", computeGain);
