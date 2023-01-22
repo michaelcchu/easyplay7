@@ -43,6 +43,7 @@ function down(e) {
                 }
                 const freq = toFreq(note);
                 if (activePress === null) {
+                    console.log(press, freq);
                     oscillator.frequency.value = freq;
                     gainNode.gain.setTargetAtTime(normalGain, 
                         audioContext.currentTime, 0.015);
