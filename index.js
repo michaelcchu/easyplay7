@@ -124,13 +124,6 @@ function toFreq(note) {
         + note.octave - tuning.octave)
 }
 
-function unbundle(note) {
-    let text = format(note); note = text.split('');
-    if (+note.at(-1)) {octave = +note.pop();} else {text += octave;}
-    let pitch = 0; while (note.length) { pitch += value[note.pop()]; }
-    return {pitch:pitch, octave:octave, text:text};
-}
-
 function up() {
     if (on && (press === activePress)) {
         gainNode.gain.setTargetAtTime(0, audioContext.currentTime, 0.015);
@@ -173,12 +166,15 @@ function setTrack() {
 }
 
 function setTuning() {
-    tuning = unbundle(tuningNote.value);
-    tuning.frequency = +tuningFrequency.value;
+    tuning = {
+        pitch: value[tuningPitch.value],
+        octave: +tuningOctave.value,
+        frequency: +tuningFrequency.value
+    }
 }
 
 input.addEventListener("change", parse);
 dbfs.addEventListener("change", setGain);
 view.addEventListener("change", setView);
 select.addEventListener("change", setTrack);
-tuningFrequency.addEventListener("change", setTuning);
+tuningBlock.addEventListener("change", setTuning);
