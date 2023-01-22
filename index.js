@@ -12,6 +12,8 @@ let press; let track; let tuning; let playedFirstNote; let tieCount;
 oscillator.connect(gainNode).connect(audioContext.destination);
 osmd.FollowCursor = true;
 
+setGain();
+
 function down(e) {
     const strPress = "" + press;
     if (on && !badKeys.some(badKey => strPress.includes(badKey))
@@ -106,8 +108,6 @@ function parse() {
 }
 
 function render() {
-    resetVars();
-
     loadPromise.then(() => {
         osmd.render();
         osmd.cursor.show();
@@ -119,7 +119,6 @@ function resetVars() {
     tuning = unbundle(tuningNote.value);
     tuning.frequency = +tuningFrequency.value;
     tieCount = 0;
-    computeGain();
     gainNode.gain.value = 0;
 }
 
@@ -153,7 +152,7 @@ start.addEventListener("click", () => {
     resetVars();
 });
 
-function computeGain() {
+function setGain() {
     normalGain = 10**(dbfs.value/20);
 };
 
@@ -175,6 +174,6 @@ function setTrack() {
 }
 
 input.addEventListener("change", parse);
-dbfs.addEventListener("change", computeGain);
+dbfs.addEventListener("change", setGain);
 view.addEventListener("change", setView);
 select.addEventListener("change", setTrack);
