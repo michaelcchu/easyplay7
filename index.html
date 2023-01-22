@@ -12,19 +12,36 @@
 <meta name="msapplication-TileColor" content="#ffffff">
 <meta name="msapplication-TileImage" content="/mstile-144x144.png?v=0">
 <meta name="theme-color" content="#ffffff">
-<style>
-    input {font-family: monospace,monospace;}
-    #container {overflow-x: hidden;}
-</style>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+<link href="styles.css" rel="stylesheet">  
 <h1>EasyPlay7</h1>
 <div id="tuningBlock">
     tuning: 
-    <input id="tuningPitch" value="a" size="4"> 
-    <input id="tuningOctave" type="number" value="4">
+    <select id="tuningPitch">
+        <option>a</option>
+        <option>b</option>
+        <option>c</option>
+        <option>d</option>
+        <option>e</option>
+        <option>f</option>
+        <option>g</option>
+    </select>
     <select id="tuningAccidental">
         <option></option>
         <option>#</option>
         <option>&</option>
+    </select>
+    <select id="tuningOctave">
+        <option>0</option>
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+        <option selected>4</option>
+        <option>5</option>
+        <option>6</option>
+        <option>7</option>
+        <option>8</option>
     </select>
     = 
     <input id="tuningFrequency" type="number" step="any" value="440">
