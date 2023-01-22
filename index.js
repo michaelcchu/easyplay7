@@ -11,7 +11,6 @@ let press; let track; let tuning; let playedFirstNote; let tieCount;
 
 oscillator.connect(gainNode).connect(audioContext.destination);
 osmd.FollowCursor = true;
-//osmd.setOptions({renderSingleHorizontalStaffline: true});
 
 function down(e) {
     const strPress = "" + press;
@@ -107,9 +106,7 @@ function parse() {
 
 function render() {
     resetVars();
-    for (let i = 0; i < parts.length; i++) {
-        osmd.sheet.Instruments[i].Visible = (i === track);
-    }
+
     loadPromise.then(() => {
         osmd.render();
         osmd.cursor.show();
@@ -120,7 +117,6 @@ function resetVars() {
     activePress = null; playedFirstNote = false;
     tuning = unbundle(tuningNote.value);
     tuning.frequency = +tuningFrequency.value;
-    track = select.selectedIndex;
     tieCount = 0;
     computeGain();
     gainNode.gain.value = 0;
@@ -146,7 +142,6 @@ function up() {
 }
 
 input.addEventListener("change", parse);
-select.addEventListener("change", render);
 
 const containerEventTypes = ["touchstart","touchend"];
 for (et of containerEventTypes) {container.addEventListener(et, key);}
@@ -163,4 +158,23 @@ function computeGain() {
     normalGain = 10**(dbfs.value/20);
 };
 
+function setView() {
+    if (view.value === "horizontal") {
+        osmd.setOptions({renderSingleHorizontalStaffline: true});
+    } else {
+        osmd.setOptions({renderSingleHorizontalStaffline: false});
+    }
+    render();
+}
+
+function setTrack() {
+    track = select.selectedIndex;
+    for (let i = 0; i < parts.length; i++) {
+        osmd.sheet.Instruments[i].Visible = (i === track);
+    }
+    render();
+}
+
 dbfs.addEventListener("change", computeGain);
+view.addEventListener("change", setView);
+select.addEventListener("change", setTrack);
