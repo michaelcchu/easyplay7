@@ -6,14 +6,18 @@ input {font-family: monospace,monospace;}
         "top"
         "middle"
         "bottom";
+    grid-template-rows: auto auto 1fr;
+    height: 100vh;
 }
 
 .side-panel {grid-area: top;}
-.side-panel-toggle {grid-area: middle;}
+.side-panel-toggle {
+    grid-area: middle;
+    display: grid;
+}
 .main {
     grid-area: bottom;
     overflow: scroll;
-    height: 50vh;
 }
 
 .sp-icon-open {display: none;}
