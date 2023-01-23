@@ -7,7 +7,7 @@ input {font-family: monospace,monospace;}
         "middle"
         "bottom";
     grid-template-rows: auto auto 1fr;
-    height: 100vh;
+    height: calc(100vh - 16px);
 }
 
 .side-panel {grid-area: top;}
