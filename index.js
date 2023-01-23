@@ -7,7 +7,7 @@ const osmd = new opensheetmusicdisplay.OpenSheetMusicDisplay(container);
 const value = {"c":0,"d":2,"e":4,"f":5,"g":7,"a":9,"b":11,"#":1,"&":-1,"":0};
 
 let activePress; let loadPromise; let normalGain; let on = false; let parts;
-let press; let track; let tuning; let playedFirstNote; let tieCount;
+let press; let track; let tuning; let tieCount;
 
 oscillator.connect(gainNode).connect(audioContext.destination);
 osmd.FollowCursor = true;
@@ -24,17 +24,15 @@ function down(e) {
     const strPress = "" + press;
     if (on && !badKeys.some(badKey => strPress.includes(badKey))
         && !e.repeat && (document.activeElement.nodeName !== 'INPUT') 
-        && (press != activePress) && (osmd.cursor !== null)) {
+        && (press != activePress) && (osmd.cursor !== null)) {            
             // Skip tied notes
             if (tieCount > 0) {
                 for (let i=0; i < tieCount; i++) {osmd.cursor.next();}
                 tieCount = 0;
             }
-            
-            // Special behavior for first note
-            if (playedFirstNote) {osmd.cursor.next();} 
-            else {playedFirstNote = true;}
 
+            osmd.cursor.next();
+            
             // Skip rests
             while ((osmd.cursor.NotesUnderCursor().length > 0) 
                 && (osmd.cursor.NotesUnderCursor()[0].pitch === undefined)) {
@@ -69,10 +67,7 @@ function down(e) {
             }
     } else if (strPress.includes("Arrow") && (activePress === null)) {
         if (strPress.includes("Left")) {
-            if (osmd.cursor.iterator.currentTimeStamp.realValue > 0) {
-                osmd.cursor.previous();
-                playedFirstNote = false;
-            }
+            osmd.cursor.previous();
         }
         else if (strPress.includes("Right")) {osmd.cursor.next();}
     } else if (strPress.includes("Home") && (activePress === null)) {
@@ -120,7 +115,7 @@ function render() {
 }
 
 function resetVars() {
-    activePress = null; playedFirstNote = false;
+    activePress = null;
     tieCount = 0;
     gainNode.gain.value = 0;
 }
