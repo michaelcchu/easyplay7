@@ -1,2 +1,9 @@
 input {font-family: monospace,monospace;}
-#container {overflow-x: hidden;}
+
+.wrapper {display: grid;}
+
+.sp-icon-open {display: none;}
+
+.side-panel-close .side-panel {display: none;}
+.side-panel-close .sp-icon-open {display: initial;}
+.side-panel-close .sp-icon-close {display: none;}

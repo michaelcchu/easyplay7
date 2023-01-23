@@ -17,7 +17,6 @@ setTuning();
 
 function begin() {
     if (!on) {oscillator.start(); on = true;}
-    if (osmd.cursor) {osmd.cursor.reset();}
     resetVars();
 }
 
@@ -61,10 +60,11 @@ function down(e) {
                         audioContext.currentTime, 0.003);   
                 }
                 activePress = press;
+
+                // if there's a tie, keep track of it
                 if (osmd.cursor.NotesUnderCursor()[0].tie !== undefined) {
                     const tie = osmd.cursor.NotesUnderCursor()[0].tie;
                     tieCount = tie.notes.length - 1;
-
                 }
             }
     } else if (strPress.includes("Arrow") && (activePress === null)) {
@@ -111,10 +111,12 @@ function parse() {
 }
 
 function render() {
-    loadPromise.then(() => {
-        osmd.render();
-        osmd.cursor.show();
-    });
+    if (loadPromise) {
+        loadPromise.then(() => {
+            osmd.render();
+            osmd.cursor.show();
+        });
+    }
 }
 
 function resetVars() {
@@ -175,3 +177,7 @@ dbfs.addEventListener("change", setGain);
 view.addEventListener("change", setView);
 select.addEventListener("change", setTrack);
 tuningBlock.addEventListener("change", setTuning);
+
+document.querySelector(".side-panel-toggle").addEventListener("click", () => {
+    document.querySelector(".wrapper").classList.toggle("side-panel-close");
+});
