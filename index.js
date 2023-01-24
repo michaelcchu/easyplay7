@@ -86,22 +86,25 @@ function parse() {
         const reader = new FileReader();
         reader.addEventListener("load", (e) => {
              const text = e.target.result;
-             const parser = new DOMParser();
-             const mxlDoc = parser.parseFromString(text,'text/xml');
-             console.log(mxlDoc);
-             loadPromise = osmd.load(mxlDoc);             
-             parts = mxlDoc.querySelectorAll("part");
-
-             // replace the old track options with new track options 
-             while (select.options.length) {select.options.remove(0);}
-             for (let i = 0; i < parts.length; i++) {
-                 const option = document.createElement("option");
-                 option.text = parts[i].id; select.add(option);
-             }
-             resetVars();
-             setTrack();
+             loadPromise = osmd.load(text);
+             loadPromise.then(() => {
+                // replace the old track options with new track options 
+                while (select.options.length) {select.options.remove(0);}
+                parts = osmd.sheet.Instruments;
+                for (let i = 0; i < parts.length; i++) {
+                    const option = document.createElement("option");
+                    option.text = parts[i].nameLabel.text; select.add(option);
+                }
+                resetVars();
+                setTrack();
+            });             
         });
-        reader.readAsText(file);
+        const name = file.name.toLowerCase();
+        if (name.endsWith(".musicxml") || name.endsWith(".xml")) {
+            reader.readAsText(file);
+        } else if (name.endsWith(".mxl")) {
+            reader.readAsBinaryString(file);
+        }
     }
 }
 
