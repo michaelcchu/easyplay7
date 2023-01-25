@@ -157,6 +157,11 @@ function setView() {
     render();
 }
 
+function setZoom() {
+    osmd.zoom = zoomFactor.value;
+    render();
+}
+
 function toFreq(note) {
     return tuning.frequency * 2**((note.pitch - tuning.pitch)/12 
         + note.octave - tuning.octave)
@@ -180,7 +185,7 @@ dbfs.addEventListener("change", setGain);
 view.addEventListener("change", setView);
 select.addEventListener("change", setTrack);
 tuningBlock.addEventListener("change", setTuning);
-
+zoomFactor.addEventListener("change", setZoom);
 document.querySelector(".side-panel-toggle").addEventListener("click", () => {
     document.querySelector(".wrapper").classList.toggle("side-panel-close");
 });
