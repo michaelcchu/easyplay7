@@ -109,10 +109,14 @@ function parse() {
     }
 }
 
-function render() {
+function render(reset=false) {
     if (loadPromise) {
         loadPromise.then(() => {
             osmd.render();
+            if (reset) {
+                osmd.cursor.reset();
+                osmd.cursor.previous();
+            }
             osmd.cursor.show();
         });
     }
@@ -133,7 +137,7 @@ function setTrack() {
     for (let i = 0; i < parts.length; i++) {
         osmd.sheet.Instruments[i].Visible = (i === track);
     }
-    render();
+    render(true);
 }
 
 function setTuning() {
