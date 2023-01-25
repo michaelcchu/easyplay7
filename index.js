@@ -48,15 +48,16 @@ function down(e) {
                     octave: pitch.octave + 3,
                 }
                 const freq = toFreq(note);
-                console.log(press, freq);
+                const gain = normalGain * (49 / freq);
                 if (activePress === null) {
                     oscillator.frequency.value = freq;
-                    gainNode.gain.setTargetAtTime(normalGain, 
-                        audioContext.currentTime, 0.015);
                 } else {
                     oscillator.frequency.setTargetAtTime(freq, 
                         audioContext.currentTime, 0.003);   
                 }
+                gainNode.gain.setTargetAtTime(gain, 
+                    audioContext.currentTime, 0.015);
+
                 activePress = press;
 
                 // if there's a tie, keep track of it
