@@ -2,7 +2,9 @@
 
 play music by pressing keys on the keyboard (or tapping the screen).
 
-enter notes as text or upload a midi file.
+upload any .musicxml, .xml, or .mxl file.
+
+uses [opensheetmusicdisplay](https://github.com/opensheetmusicdisplay/opensheetmusicdisplay) and [Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API).
 
 user controls timing and duration of notes in real time / during live performance.
 
@@ -11,13 +13,14 @@ the sequence of notes is specified beforehand.
 why is this useful?
 - you only need to play the rhythms; the computer takes care of playing the right notes.
 - much of musical expression comes from the [timing and duration of notes](https://en.wikipedia.org/wiki/Expressive_timing).
-- it's a way to play midi files expressively (rather than like a metronome / robot).
+- it's a way to play music files expressively (rather than like a metronome / robot).
 - when you don't have to worry about technique / getting all the right notes out / playing in tune (since the computer ensures that this will happen), your mind is freed and liberated so that you can focus on what matters most: expression.
 - it's a good division of labor: computers do the hard technical stuff (playing the right sequence of notes in tune), and humans focus on what we're good at: musical expression.
 
 what can i use this for?
 - you can play on your own, or with a friend / ensemble, or with a recording.
-- you can play any piece you want, as long as you can find a midi file for it on the internet.
+- you can play any piece you want, as long as you can find a .musicxml, .xml, or .mxl file for it on the internet. you can also create your own .musicxml file or convert a midi file to .musicxml.
+  additionally, you can use a score editor such as [MuseScore](https://musescore.com/), [NoteFlight](https://www.noteflight.com/), [Flat.io](https://flat.io/), or [LilyPond](http://lilypond.org/)/[Frescobaldi](https://www.frescobaldi.org/) to modify your score before uploading it to easyplay7.
 
 in summary:
 
