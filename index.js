@@ -174,12 +174,25 @@ function up() {
     }
 }
 
+function getCurrentMeasure() {
+    return osmd.cursor.iterator.currentMeasureIndex + 1;
+}
+
+function goToMeasure() {
+    if (osmd.cursor) {
+        const measure = +measureInput.value;
+        while (getCurrentMeasure() < measure) {osmd.cursor.next();}
+        while (getCurrentMeasure() > measure) {osmd.cursor.previous();}    
+    }
+}
+
 const containerEventTypes = ["touchstart","touchend"];
 for (et of containerEventTypes) {container.addEventListener(et, key);}
 const docEventTypes = ["keydown","keyup"];
 for (et of docEventTypes) {document.addEventListener(et, key);}
 
 start.addEventListener("click", begin);
+go.addEventListener("click", goToMeasure);
 input.addEventListener("change", parse);
 dbfs.addEventListener("change", setGain);
 view.addEventListener("change", setView);
