@@ -57,7 +57,7 @@
                 </select>
                 = 
                 <input id="tuningFrequency" type="number" step="any" 
-                    value="440">
+                    value="440" min="0">
             </div>
             <p>view: 
             <select id="view">
@@ -70,7 +70,7 @@
                 step="0.25" value="1"></p></p>
             <p><button id="start">start</button></p>
             <p><button id="go">go</button> to measure <input 
-                id="measureInput"></p>
+                id="measureInput" type="number" value="1" min="1"></p>
         </div>
     
         <button class="side-panel-toggle" type="button">

@@ -181,8 +181,12 @@ function getCurrentMeasure() {
 function goToMeasure() {
     if (osmd.cursor) {
         const measure = +measureInput.value;
-        while (getCurrentMeasure() < measure) {osmd.cursor.next();}
-        while (getCurrentMeasure() > measure) {osmd.cursor.previous();}    
+        const first = osmd.sheet.FirstMeasureNumber;
+        const last = osmd.sheet.LastMeasureNumber;
+        if ((first <= measure) && (measure <= last)) {
+            while (getCurrentMeasure() < measure) {osmd.cursor.next();}
+            while (getCurrentMeasure() > measure) {osmd.cursor.previous();}        
+        }
     }
 }
 
