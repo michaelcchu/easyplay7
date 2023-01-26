@@ -16,6 +16,7 @@ setGain();
 setTuning();
 
 function begin() {
+    document.querySelector(".splash").classList.toggle("splash-toggle");
     if (!on) {oscillator.start(); on = true;}
     resetVars();
 }
