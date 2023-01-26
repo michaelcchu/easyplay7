@@ -1,4 +1,27 @@
+a, a:visited, a:hover, a:active {
+	text-decoration: none;
+	color: #888888;
+}
+
+a:hover {color: #CCCCCC;}
+
 body {font-family: Roboto;}
+
+.main {
+    grid-area: bottom;
+    overflow: scroll;
+}
+
+.side-panel {grid-area: top;}
+
+.side-panel-close .side-panel {display: none;}
+.side-panel-close .sp-icon-close {display: none;}
+.side-panel-close .sp-icon-open {display: initial;}
+
+.side-panel-toggle {
+    grid-area: middle;
+    display: grid;
+}
 
 .splash{
     position: fixed;
@@ -16,6 +39,8 @@ body {font-family: Roboto;}
     font-size: max(2vh, 18px);
 }
 
+.sp-icon-open {display: none;}
+
 .wrapper {
     display: grid;
     grid-template-areas:
@@ -25,19 +50,3 @@ body {font-family: Roboto;}
     grid-template-rows: auto auto 1fr;
     height: calc(100vh - 16px);
 }
-
-.side-panel {grid-area: top;}
-.side-panel-toggle {
-    grid-area: middle;
-    display: grid;
-}
-.main {
-    grid-area: bottom;
-    overflow: scroll;
-}
-
-.sp-icon-open {display: none;}
-
-.side-panel-close .side-panel {display: none;}
-.side-panel-close .sp-icon-open {display: initial;}
-.side-panel-close .sp-icon-close {display: none;}

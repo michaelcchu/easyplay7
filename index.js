@@ -80,6 +80,34 @@ function down(e) {
     }
 }
 
+function getCurrentMeasure() {
+    return osmd.cursor.iterator.currentMeasureIndex + 1;
+}
+
+function goToMeasure() {
+    if (osmd.cursor) {
+        const measure = +measureInput.value;
+        const first = osmd.sheet.FirstMeasureNumber;
+        const last = osmd.sheet.LastMeasureNumber;
+        if ((first <= measure) && (measure <= last)) {
+            if (getCurrentMeasure() < measure) {
+                while (getCurrentMeasure() < measure) {osmd.cursor.next();}
+                osmd.cursor.previous();
+            } else if (getCurrentMeasure() > measure) {
+                if (measure === 1) {
+                    osmd.cursor.reset();
+                    osmd.cursor.previous();
+                } else {
+                    while (getCurrentMeasure() > measure - 1) {
+                        osmd.cursor.previous();
+                    }
+                }
+            }
+        }
+        document.activeElement.blur();
+    }
+}
+
 function key(e) { 
     if (e.type.includes("key")) {press = e.key;} 
     else {press = e.changedTouches[0].identifier;}
@@ -179,46 +207,18 @@ function up() {
     }
 }
 
-function getCurrentMeasure() {
-    return osmd.cursor.iterator.currentMeasureIndex + 1;
-}
-
-function goToMeasure() {
-    if (osmd.cursor) {
-        const measure = +measureInput.value;
-        const first = osmd.sheet.FirstMeasureNumber;
-        const last = osmd.sheet.LastMeasureNumber;
-        if ((first <= measure) && (measure <= last)) {
-            if (getCurrentMeasure() < measure) {
-                while (getCurrentMeasure() < measure) {osmd.cursor.next();}
-                osmd.cursor.previous();
-            } else if (getCurrentMeasure() > measure) {
-                if (measure === 1) {
-                    osmd.cursor.reset();
-                    osmd.cursor.previous();
-                } else {
-                    while (getCurrentMeasure() > measure - 1) {
-                        osmd.cursor.previous();
-                    }
-                }
-            }
-        }
-        document.activeElement.blur();
-    }
-}
-
 const containerEventTypes = ["touchstart","touchend"];
 for (et of containerEventTypes) {container.addEventListener(et, key);}
 const docEventTypes = ["keydown","keyup"];
 for (et of docEventTypes) {document.addEventListener(et, key);}
 
-start.addEventListener("click", begin);
+dbfs.addEventListener("change", setGain);
 go.addEventListener("click", goToMeasure);
 input.addEventListener("change", parse);
-dbfs.addEventListener("change", setGain);
-view.addEventListener("change", setView);
 select.addEventListener("change", setTrack);
+start.addEventListener("click", begin);
 tuningBlock.addEventListener("change", setTuning);
+view.addEventListener("change", setView);
 zoomFactor.addEventListener("change", setZoom);
 document.querySelector(".side-panel-toggle").addEventListener("click", () => {
     document.querySelector(".wrapper").classList.toggle("side-panel-close");
