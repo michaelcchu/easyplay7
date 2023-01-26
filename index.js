@@ -97,7 +97,7 @@ function parse() {
                     option.text = parts[i].nameLabel.text; select.add(option);
                 }
                 resetVars();
-                setTrack();
+                setTrack(null, true);
             });             
         });
         const name = file.name.toLowerCase();
@@ -132,12 +132,12 @@ function setGain() {
     normalGain = 10**(dbfs.value/20);
 };
 
-function setTrack() {
+function setTrack(e, reset=false) {
     track = select.selectedIndex;
     for (let i = 0; i < parts.length; i++) {
         osmd.sheet.Instruments[i].Visible = (i === track);
     }
-    render(true);
+    render(reset);
 }
 
 function setTuning() {
