@@ -187,8 +187,19 @@ function goToMeasure() {
         const first = osmd.sheet.FirstMeasureNumber;
         const last = osmd.sheet.LastMeasureNumber;
         if ((first <= measure) && (measure <= last)) {
-            while (getCurrentMeasure() < measure) {osmd.cursor.next();}
-            while (getCurrentMeasure() > measure) {osmd.cursor.previous();}        
+            if (getCurrentMeasure() < measure) {
+                while (getCurrentMeasure() < measure) {osmd.cursor.next();}
+                osmd.cursor.previous();
+            } else if (getCurrentMeasure() > measure) {
+                if (measure === 1) {
+                    osmd.cursor.reset();
+                    osmd.cursor.previous();
+                } else {
+                    while (getCurrentMeasure() > measure - 1) {
+                        osmd.cursor.previous();
+                    }
+                }
+            }
         }
     }
 }
