@@ -70,13 +70,13 @@ function down(e) {
                     tieCount = tie.notes.length - 1;
                 }
             }
-    } else if (strPress.includes("Arrow") && (activePress === null)) {
-        if (strPress.includes("Left")) {
-            osmd.cursor.previous();
+    } else if (document.activeElement.nodeName !== 'INPUT') {
+        if (strPress.includes("Arrow") && (activePress === null)) {
+            if (strPress.includes("Left")) {
+                osmd.cursor.previous();
+            }
+            else if (strPress.includes("Right")) {osmd.cursor.next();}
         }
-        else if (strPress.includes("Right")) {osmd.cursor.next();}
-    } else if (strPress.includes("Home") && (activePress === null)) {
-        begin();
     }
 }
 
@@ -102,7 +102,7 @@ function parse() {
                 }
                 resetVars();
                 setTrack(null, true);
-            });             
+            });        
         });
         const name = file.name.toLowerCase();
         if (name.endsWith(".musicxml") || name.endsWith(".xml")) {
@@ -122,6 +122,7 @@ function render(reset=false) {
                 osmd.cursor.previous();
             }
             osmd.cursor.show();
+            document.activeElement.blur();
         });
     }
 }
@@ -202,6 +203,7 @@ function goToMeasure() {
                 }
             }
         }
+        document.activeElement.blur();
     }
 }
 
