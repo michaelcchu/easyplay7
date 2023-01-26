@@ -48,7 +48,10 @@ function down(e) {
                     octave: pitch.octave + 3,
                 }
                 const freq = toFreq(note);
-                const gain = normalGain * (49 / freq);
+                let gain = 0;
+                if (freq > 0) {
+                    gain = normalGain * (49 / freq);
+                }
                 if (activePress === null) {
                     oscillator.frequency.value = freq;
                 } else {
