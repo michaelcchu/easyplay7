@@ -19,6 +19,7 @@ function begin() {
     document.querySelector(".splash").classList.toggle("splash-toggle");
     if (!on) {oscillator.start(); on = true;}
     resetVars();
+    parse("Aus_meines_Herzens_Grunde.mxl");
 }
 
 function down(e) {
@@ -114,24 +115,25 @@ function key(e) {
     if (["keydown","touchstart"].includes(e.type)) {down(e);} else {up();}
 }
 
-function parse() {
+function parse(text) {
+    loadPromise = osmd.load(text);
+    loadPromise.then(() => {
+       // replace the old track options with new track options 
+       while (select.options.length) {select.options.remove(0);}
+       parts = osmd.sheet.Instruments;
+       for (let i = 0; i < parts.length; i++) {
+           const option = document.createElement("option");
+           option.text = parts[i].nameLabel.text; select.add(option);
+       }
+       resetVars();
+       setTrack(null, true);
+   });       
+}
+
+function readFile() {
     for (const file of input.files) {
         const reader = new FileReader();
-        reader.addEventListener("load", (e) => {
-             const text = e.target.result;
-             loadPromise = osmd.load(text);
-             loadPromise.then(() => {
-                // replace the old track options with new track options 
-                while (select.options.length) {select.options.remove(0);}
-                parts = osmd.sheet.Instruments;
-                for (let i = 0; i < parts.length; i++) {
-                    const option = document.createElement("option");
-                    option.text = parts[i].nameLabel.text; select.add(option);
-                }
-                resetVars();
-                setTrack(null, true);
-            });        
-        });
+        reader.addEventListener("load", (e) => {parse(e.target.result);});
         const name = file.name.toLowerCase();
         if (name.endsWith(".musicxml") || name.endsWith(".xml")) {
             reader.readAsText(file);
@@ -214,7 +216,7 @@ for (et of docEventTypes) {document.addEventListener(et, key);}
 
 dbfs.addEventListener("change", setGain);
 go.addEventListener("click", goToMeasure);
-input.addEventListener("change", parse);
+input.addEventListener("change", readFile);
 select.addEventListener("change", setTrack);
 start.addEventListener("click", begin);
 tuningBlock.addEventListener("change", setTuning);
